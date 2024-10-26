@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 def parse(url):
-    service = Service('edgedriver_win64/msedgedriver.exe')
+    service = Service('py-parser/msedgedriver.exe')
     driver = webdriver.Edge(service=service)
     driver.get(url)
 
@@ -32,7 +32,7 @@ def parse(url):
     return product
 
 def search_by_name(name):
-    service = Service('edgedriver_win64/msedgedriver.exe')
+    service = Service('py-parser/msedgedriver.exe')
     driver = webdriver.Edge(service=service)
     url = f"https://www.wildberries.ru/catalog/0/search.aspx?search={name}"
     driver.get(url)
