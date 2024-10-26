@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState("");
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   const [userLink, setUserLink] = useState("");
   const [previousLinks, setPreviousLinks] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Состояние для видимости выпадающего списка
@@ -31,7 +31,11 @@ function App() {
 
   // Функция для проверки ссылки и получения данных
   const search = () => {
+<<<<<<< Updated upstream
     const userInput = document.querySelector(".user_input").value.trim(); // Получение ссылки введённой пользователем
+=======
+    const userInput = document.querySelector(".user_input").value;
+>>>>>>> Stashed changes
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
 
     if (urlPattern.test(userInput)) {
@@ -69,11 +73,12 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error('Ошибка при отправке ссылки');
+        throw new Error("Ошибка при отправке ссылки");
       }
 
       const result = await response.json();
-      setProducts([result]); // Добавляем полученный продукт в массив products
+      console.log("Полученные данные:", result); // Проверяем структуру данных
+      setProducts(result); // Устанавливаем данные для продуктов
     } catch (error) {
       console.error("Error:", error);
       setError("Ошибка при получении данных о товаре");
@@ -99,6 +104,7 @@ function App() {
       <header className="header">
         <h1>Анализатор карточек товаров</h1>
 
+<<<<<<< Updated upstream
         <div className='container'>
           <div ref={inputRef} className="input-container">
             <input
@@ -122,35 +128,61 @@ function App() {
           <img className='s_icon'
             src='/search.svg'
             alt='s'
+=======
+        <div className="container">
+          <input type="text" className="user_input" placeholder="Введите ссылку на товар" />
+          <img
+            className="s_icon"
+            src="/search.svg"
+            alt="s"
+>>>>>>> Stashed changes
             onClick={search}
-            onMouseOver={e => (e.currentTarget.src = '/search_h.svg')}
-            onMouseOut={e => (e.currentTarget.src = '/search.svg')}
+            onMouseOver={(e) => (e.currentTarget.src = "/search_h.svg")}
+            onMouseOut={(e) => (e.currentTarget.src = "/search.svg")}
           />
         </div>
 
-        {isValid ? (
-          products.length > 0 ? (
-            <div className='result'>
-              {products.map((product, index) => (
-                <div key={index} className="card">
-                  <img src={product.image} alt="" />
+        {isValid && !error && (
+          <>
+            {products ? (
+              <div className="result">
+
+                <div className="card">
+                  <img src={products.original.image} alt="Product Image" />
                   <div className="card_content">
-                    <h2 className="price">{product.price} &#8381;</h2>
-                    <h3 className="name">{product.name}</h3>
-                    <p className="description">{product.description}</p>
+                    <h2 className="price">{products.original.price} &#8381;</h2>
+                    <h3 className="name">{products.original.name}</h3>
                   </div>
-                  <a href={userLink} className="item_link" target="_blank" rel="noopener noreferrer">
+                  <a href={products.original.link} className="item_link" target="_blank" rel="noopener noreferrer">
                     К товару
                   </a>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className='error_message'>{error}</div>
-          )
-        ) : (
-          <div className='error_message'>{error}</div>
+
+
+                {products.related && products.related.length > 0 ? (
+                  products.related.map((product, index) => (
+                    <div key={index} className="card">
+                      <img src={product.image} alt="Product Image" />
+                      <div className="card_content">
+                        <h2 className="price">{product.price} &#8381;</h2>
+                        <h3 className="name">{product.name}</h3>
+                      </div>
+                      <a href={product.link} className="item_link" target="_blank" rel="noopener noreferrer">
+                        К товару
+                      </a>
+                    </div>
+                  ))
+                ) : (
+                  <p>Нет похожих товаров</p>
+                )}
+              </div>
+            ) : (
+              <p>Загрузка...</p>
+            )}
+          </>
         )}
+
+        {error && <div className="error_message">{error}</div>}
       </header>
     </div>
   );
