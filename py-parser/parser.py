@@ -21,11 +21,7 @@ time.sleep(3)  # Увеличьте значение при необходимо
 product = {}
 
 try:
-    product['name'] = driver.find_element(By.CSS_SELECTOR, '.product-page__title').text
-    #product['image'] = driver.find_element(By.CSS_SELECTOR, '.photo-zoom__preview j-zoom-image hide img').get_attribute('src')
-    #product['brand'] = driver.find_element(By.CSS_SELECTOR, '.product-page__header-brand j-wba-card-item j-wba-card-item-show j-wba-card-item-observe').text
-    product['seller'] = driver.find_element(By.CSS_SELECTOR, '.seller-info__name').text
-    #product['price'] = driver.find_element(By.CSS_SELECTOR, '.price-block__final-price wallet').text
+    product['name'] = driver.find_element(By.CLASS_NAME, 'product-page__title').text
 except Exception as e:
     print(f"Error occurred: {e}")
 

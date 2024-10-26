@@ -9,7 +9,7 @@ function search() {
 const fs = require('fs');
 
 // Чтение JSON из файла
-fs.readFile('py-parser/product.json', 'utf8', (err, data) => {
+fs.readFile('product.json', 'utf8', (err, data) => {
     if (err) {
         console.error('Ошибка при чтении файла:', err);
         return;
