@@ -7,7 +7,7 @@ import time
 def parse(url):
 
     # Настройка драйвера
-    service = Service('c:\\Users\\volko\\Downloads\\edgedriver_win64\\msedgedriver.exe')  
+    service = Service('edgedriver_win64\\msedgedriver.exe')  
     driver = webdriver.Edge(service=service)
     driver.get(url)
 
@@ -17,6 +17,7 @@ def parse(url):
 
     try:
         product['name'] = driver.find_element(By.CLASS_NAME, 'product-page__title').text
+        #product['image'] = driver.find_element(By.CLASS_NAME, 'photo-zoom__preview j-zoom-image hide').get_attribute("src")
     except Exception as e:
         print(f"Error occurred: {e}")
 
@@ -27,3 +28,4 @@ def parse(url):
         json.dump(product, f, ensure_ascii=False, indent=4)
 
     print("Данные о товаре успешно сохранены в product.json")
+#parse("https://www.wildberries.ru/catalog/260553095/detail.aspx")

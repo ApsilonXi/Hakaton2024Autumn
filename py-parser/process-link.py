@@ -7,6 +7,7 @@ app = Flask(__name__)
 CORS(app)
 user_link = None
 @app.route('/process-link', methods=['POST'])
+
 def process_link():
     global user_link
     data = request.get_json()
@@ -24,5 +25,5 @@ def process_link():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+
 
