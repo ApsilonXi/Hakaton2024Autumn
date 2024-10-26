@@ -1,4 +1,3 @@
-version: '3'
 services:
   frontend:
     build:
@@ -8,7 +7,6 @@ services:
       - "3000:3000"
     depends_on:
       - parser
-
   parser:
     build:
       context: ./py-parser
