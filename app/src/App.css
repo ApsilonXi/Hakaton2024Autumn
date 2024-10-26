@@ -106,34 +106,43 @@
 .result {
   visibility: visible;
 }
-.card{
+.card {
   width: 290px;
   background-color: rgb(255, 255, 255);
   overflow: hidden;
-  transition: transform 0.6s ease;
   margin-bottom: 25px;
-  height: 547px;
+  height: 580px;
   display: flex;
   flex-direction: column;
-  transition: .5s ease;
+  justify-content: flex-start; /* Items aligned to the start of the column */
   position: relative;
   color: rgb(68, 68, 68);
   font-size: 16px;
   text-align: left;
-}
-.card img{
-  border-radius: 16px;
-  width: 290px;
-  height: 290px;
-  object-fit: contain;
+  word-wrap: break-word;
 }
 
-h2 {
-  font-size: 220%;
-  color: rgb(64, 139, 237);
+.card img {
+  border-radius: 16px;
+  width: 100%;
+  height: 290px;
+  object-fit: contain; /* Ensure the image is fully visible without cropping */
+  flex-shrink: 0; /* Prevent shrinking */
 }
-h3, p, a {
-  font-size: 150%;
+
+.card_content {
+  padding: 10px 15px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.card_content p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  margin-bottom: 15px;
 }
 
 a {
@@ -144,7 +153,24 @@ a {
   line-height: 40px;
   border-radius: 16px;
   transition: background-color 0.2s linear, color 0.2s linear;
+  width: 100%; /* Full width of the card */
+  margin-top: auto; /* Push the link to the bottom */
 }
+
+a:hover {
+  background-color: rgb(64, 139, 237);
+}
+
+
+h2 {
+  font-size: 220%;
+  color: rgb(64, 139, 237);
+}
+h3, p, a {
+  font-size: 150%;
+}
+
+
 a:hover{
   background-color: rgb(64, 139, 237);
 }

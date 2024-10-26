@@ -1,0 +1,14 @@
+[
+    {
+      "name": "Product 1",
+      "price": "20 000 ₽",
+      "description": "This is the first product.",
+      "href": "https://www.wildberries.ru/catalog/188231132/detail.aspx"
+    },
+    {
+      "name": "Product 2",
+      "price": "15 000 ₽",
+      "description": "This is the first product. This is the first product. This is the first product. This is the first product. This is the first product.This is the first product.",
+      "href": "https://www.wildberries.ru/catalog/67890/detail.aspx"
+    }
+  ]
