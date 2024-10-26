@@ -1,49 +1,40 @@
+import React, { useState } from "react";
 import './App.css';
-import { useState } from 'react';
 
-
-/*const fs = require('fs');
-
-// Чтение JSON из файла
-fs.readFile('product.json', 'utf8', (err, data) => {
-    if (err) {
-        console.error('Ошибка при чтении файла:', err);
-        return;
-    }
-    // Преобразование строки в объект JavaScript
-    const jsonData = JSON.parse(data);
-    console.log(jsonData);
-});*/
-function JSONuserInput(input) {
-  const fs = require('fs');
-  const jsonData = JSON.stringify(input);
-  fs.writeFile('input.json', jsonData, (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log('Data has been written to data.json');
-  });
-}
-  
-
-//result - контейнер с карточками
-//поле ввода - classname: user_input
 function App() {
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState("");
+  const [userLink, setUserLink] = useState("");
 
   const search = () => {
-    
-    const userInput = document.querySelector(".user_input").value; //получение ссылки введеной пользователем
-    JSONuserInput(userInput);
+    const userInput = document.querySelector(".user_input").value; // получение ссылки введеной пользователем
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
     if (urlPattern.test(userInput.trim())) {
       setIsValid(true);
       setError("");
+      setUserLink(userInput);
+      sendLinkToPython(userInput);
     } else {
       setIsValid(false);
       setError("Ошибка! Неправильная ссылка на товар");
+    }
+  };
+
+  const sendLinkToPython = async (link) => {
+    try {
+      const response = await fetch("http://localhost:5000/process-link", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ link: link }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      // Handle result from Python script
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -54,12 +45,12 @@ function App() {
 
         <div className='container'>
           <input type="text" className="user_input" placeholder="Введите ссылку на товар" />
-          <img className='s_icon' 
-            src='/search.svg' 
-            alt='s' 
-            onClick={search} 
-            onMouseOver={e => (e.currentTarget.src = '/search_h.svg')} 
-            onMouseOut={e => (e.currentTarget.src = '/search.svg')} 
+          <img className='s_icon'
+            src='/search.svg'
+            alt='s'
+            onClick={search}
+            onMouseOver={e => (e.currentTarget.src = '/search_h.svg')}
+            onMouseOut={e => (e.currentTarget.src = '/search.svg')}
           />
         </div>
 
@@ -76,9 +67,7 @@ function App() {
             </div>
           </div>
         ) : (
-
           <div className='error_message'>{error}</div>
-          
         )}
       </header>
     </div>
@@ -86,3 +75,6 @@ function App() {
 }
 
 export default App;
+
+
+
