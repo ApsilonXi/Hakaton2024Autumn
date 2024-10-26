@@ -6,6 +6,19 @@ function search() {
   alert("searching...");
 }
 
+const fs = require('fs');
+
+// Чтение JSON из файла
+fs.readFile('py-parser/product.json', 'utf8', (err, data) => {
+    if (err) {
+        console.error('Ошибка при чтении файла:', err);
+        return;
+    }
+    // Преобразование строки в объект JavaScript
+    const jsonData = JSON.parse(data);
+    console.log(jsonData);
+});
+
 //result - контейнер с карточками, в css файле атрибут visibility: visible/hidden чтобы открывать/скрывать все карточки
 //поле ввода - classname: user_input
 function App() {
@@ -31,64 +44,7 @@ function App() {
                   <p class="price">Цена</p>
               </div>
           </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-          <div class="card">
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwHCmBls2L6dPXG8Zg7BfDaN9MncI73vOt4A&s' alt=''></img>
-              <div class="card_content">
-                  <h2 className='name'>Товар</h2>
-                  <p className='seller'>Продавец</p>
-                  <p className='description'>Описание</p>
-                  <p class="price">Цена</p>
-              </div>
-          </div>
-
-          
         </div>
-        
       </header>
     </div>
   );
