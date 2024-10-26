@@ -1,5 +1,7 @@
 import './App.css';
 import { useState } from 'react';
+
+
 /*const fs = require('fs');
 
 // Чтение JSON из файла
@@ -12,6 +14,18 @@ fs.readFile('product.json', 'utf8', (err, data) => {
     const jsonData = JSON.parse(data);
     console.log(jsonData);
 });*/
+function JSONuserInput(input) {
+  const fs = require('fs');
+  const jsonData = JSON.stringify(input);
+  fs.writeFile('input.json', jsonData, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log('Data has been written to data.json');
+  });
+}
+  
 
 //result - контейнер с карточками
 //поле ввода - classname: user_input
@@ -20,7 +34,9 @@ function App() {
   const [error, setError] = useState("");
 
   const search = () => {
+    
     const userInput = document.querySelector(".user_input").value; //получение ссылки введеной пользователем
+    JSONuserInput(userInput);
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
     if (urlPattern.test(userInput.trim())) {
       setIsValid(true);
