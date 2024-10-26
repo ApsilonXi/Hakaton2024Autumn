@@ -10,6 +10,19 @@ function App() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Состояние для видимости выпадающего списка
   const inputRef = useRef(null); // Ссылка на поле ввода
 
+  // Пример запроса из React к API Flask
+  const fetchData = async () => {
+    const response = await fetch('http://localhost:5000/parse', {
+      method: 'POST',
+      body: JSON.stringify({ url: "http://example.com" }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+
   // Загрузка предыдущих ссылок из localStorage при монтировании компонента
   useEffect(() => {
     const savedLinks = JSON.parse(localStorage.getItem("previousLinks")) || [];

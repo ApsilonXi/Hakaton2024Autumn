@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - parser
+
+  parser:
+    build:
+      context: ./py-parser
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./edgedriver_win64:/app/edgedriver
+    environment:
+      - EDGE_DRIVER_PATH=/app/edgedriver/msedgedriver.exe
