@@ -1,20 +1,47 @@
+@font-face {
+  font-family: 'Gilroy-Bold';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy-Bold'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gilroy-Heavy';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy-Heavy'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Heavy.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gilroy-Light';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy-Light'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gilroy-Medium';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy-Medium'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Medium.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gilroy-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy-Regular'), url('https://fonts.cdnfonts.com/s/16219/Gilroy-Regular.woff') format('woff');
+}
+* {
+  font-family: 'Gilroy-Regular';
+  color: #222831;
+}
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .header {
-  background-color: #eeeeee;
+  font-family: 'Gilroy-Regular';
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,43 +49,52 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: #222831;
+  width: 60%;
+
 }
 
 .container{
   width: 100%;
   margin: 0px;
   display: flex;
-  justify-content: center;
-  gap: 20px
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  background-color: #E9ECF1;
+  border-radius: 10px;
+  height: 64px;
 }
 
-.container input, button {
+
+
+.container input{
   font-size: 14pt;
   padding: 0px;
   margin: 0px;
-  border-width: 1;
-  border-radius: 100px;
-}
-
-.container input{
-  background-color: #eeeeee;
+  border-width: 0;
+  border: none;
+  background-color: #E9ECF1;
   height: 40px;
-  width: 70%;
+  width: 100%;
   border-color: #222831;
-  text-align: center;
+  text-align: left;
+  outline: none;
+  font-size: 20px;
+  border-radius: 10px;
+  padding-left: 20px;
 }
 
-.container button{
-  width: 110px;
-  height: 40px;
-  background: #ff5722;
-  transition: background-color 0.2s linear, color 0.2s linear;
-  text-decoration: none;
+
+
+.container img{
+  width: 48px;
+  height: 48px;
+  background-color: none;
+  padding-right: 20px;
+  background: none;
 }
-.container button:hover {
-  color: #ff5722;
-  background-color: #222831;
-}
+
 .result {
   display: flex;
   flex-wrap: wrap;
@@ -71,22 +107,50 @@
   visibility: visible;
 }
 .card{
-  width: 280px;
+  width: 290px;
   background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  box-shadow: 0px 2px 4px rgb(0, 0, 0, 0.3);
   overflow: hidden;
   transition: transform 0.6s ease;
   margin-bottom: 25px;
-  height: 480px;
+  height: 547px;
   display: flex;
   flex-direction: column;
   transition: .5s ease;
   position: relative;
   color: rgb(68, 68, 68);
   font-size: 16px;
+  text-align: left;
+}
+.card img{
+  border-radius: 16px;
+  width: 290px;
+  height: 290px;
+  object-fit: contain;
 }
 
+h2 {
+  font-size: 220%;
+  color: rgb(64, 139, 237);
+}
+h3, p, a {
+  font-size: 150%;
+}
+
+a {
+  text-decoration: none;
+  text-align: center;
+  background-color: #E9ECF1;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 16px;
+  transition: background-color 0.2s linear, color 0.2s linear;
+}
+a:hover{
+  background-color: rgb(64, 139, 237);
+}
+.error_message {
+  color: red;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
