@@ -1,31 +1,45 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import json
-import time
 
 def parse(url):
-
     # Настройка драйвера
     service = Service('edgedriver_win64\\msedgedriver.exe')  
     driver = webdriver.Edge(service=service)
     driver.get(url)
 
-    time.sleep(3) 
-    # Извлечение данных о товаре
+    # Явное ожидание появления элементов
+    wait = WebDriverWait(driver, 10)
+
     product = {}
 
     try:
-        product['name'] = driver.find_element(By.CLASS_NAME, 'product-page__title').text
-        #product['image'] = driver.find_element(By.CLASS_NAME, 'photo-zoom__preview j-zoom-image hide').get_attribute("src")
+        # Ожидание и извлечение названия товара
+        product['name'] = wait.until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'product-page__header'))
+        ).text
+
+        # Ожидание и извлечение цены товара
+        price_element = wait.until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'price-block__final-price'))
+        )
+        price_text = price_element.text.replace('\u00a0', '').replace('₽', '').strip()
+        product['price'] = int(price_text.replace(" ", ''))  # Преобразуем цену в целое число
+
+        # Ожидание и извлечение URL изображения товара
+        product['image'] = wait.until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'photo-zoom__preview'))
+        ).get_attribute("src")
+
     except Exception as e:
         print(f"Error occurred: {e}")
 
     driver.quit()
 
-    # Сохранение информации в JSON файл
-    with open('product.json', 'w', encoding='utf-8') as f:
-        json.dump(product, f, ensure_ascii=False, indent=4)
+    return product
 
-    print("Данные о товаре успешно сохранены в product.json")
+# Пример использования
 #parse("https://www.wildberries.ru/catalog/260553095/detail.aspx")

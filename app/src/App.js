@@ -4,11 +4,14 @@ import './App.css';
 function App() {
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState("");
+  const [products, setProducts] = useState([]);
   const [userLink, setUserLink] = useState("");
 
+  // Функция для проверки ссылки и получения данных
   const search = () => {
-    const userInput = document.querySelector(".user_input").value; // получение ссылки введеной пользователем
+    const userInput = document.querySelector(".user_input").value; // Получение ссылки введённой пользователем
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
+
     if (urlPattern.test(userInput.trim())) {
       setIsValid(true);
       setError("");
@@ -20,6 +23,7 @@ function App() {
     }
   };
 
+  // Отправка ссылки на сервер Python и обработка результата
   const sendLinkToPython = async (link) => {
     try {
       const response = await fetch("http://localhost:5000/process-link", {
@@ -30,11 +34,15 @@ function App() {
         body: JSON.stringify({ link: link }),
       });
 
+      if (!response.ok) {
+        throw new Error('Ошибка при отправке ссылки');
+      }
+
       const result = await response.json();
-      console.log(result);
-      // Handle result from Python script
+      setProducts([result]); // Добавляем полученный продукт в массив products
     } catch (error) {
       console.error("Error:", error);
+      setError("Ошибка при получении данных о товаре");
     }
   };
 
@@ -55,17 +63,25 @@ function App() {
         </div>
 
         {isValid ? (
-          <div className='result'>
-            <div className="card">
-              <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8P-gj3fDnuzzXlONNF4i4oiWB29JhpXhVwA&s' alt='' />
-              <div className="card_content">
-                <h2 className="price">20 000 &#8381;</h2>
-                <h3 className="name">Название товара</h3>
-                <p className='description'>Описание</p>
-              </div>
-              <a href="/" className='item_link'>К товару</a>
+          products.length > 0 ? (
+            <div className='result'>
+              {products.map((product, index) => (
+                <div key={index} className="card">
+                  <img src={product.image} alt="" />
+                  <div className="card_content">
+                    <h2 className="price">{product.price} &#8381;</h2>
+                    <h3 className="name">{product.name}</h3>
+                    <p className="description">{product.description}</p>
+                  </div>
+                  <a href={userLink} className="item_link" target="_blank" rel="noopener noreferrer">
+                    К товару
+                  </a>
+                </div>
+              ))}
             </div>
-          </div>
+          ) : (
+            <div className='error_message'>{error}</div>
+          )
         ) : (
           <div className='error_message'>{error}</div>
         )}
@@ -75,6 +91,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
