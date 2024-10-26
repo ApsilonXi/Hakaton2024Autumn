@@ -1,4 +1,3 @@
-# backend/app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from parser import parse, search_by_name_and_parse
@@ -14,7 +13,6 @@ def process_link():
     if user_link:
         product_data = parse(user_link)
         if product_data:
-            # Поиск похожих товаров и парсинг их данных
             related_products = search_by_name_and_parse(product_data.get('name'))
             return jsonify({"original": product_data, "related": related_products}), 200
         else:

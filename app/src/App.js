@@ -7,10 +7,9 @@ function App() {
   const [products, setProducts] = useState(null);
   const [userLink, setUserLink] = useState("");
   const [previousLinks, setPreviousLinks] = useState([]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Состояние для видимости выпадающего списка
-  const inputRef = useRef(null); // Ссылка на поле ввода
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
+  const inputRef = useRef(null); 
 
-  // Пример запроса из React к API Flask
   const fetchData = async () => {
     const response = await fetch('http://localhost:5000/parse', {
       method: 'POST',
@@ -23,12 +22,10 @@ function App() {
     console.log(data);
   };
 
-  // Загрузка предыдущих ссылок из localStorage при монтировании компонента
   useEffect(() => {
     const savedLinks = JSON.parse(localStorage.getItem("previousLinks")) || [];
     setPreviousLinks(savedLinks);
 
-    // Обработчик для скрытия выпадающего списка при клике вне поля ввода
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
         setIsDropdownVisible(false);
@@ -42,7 +39,6 @@ function App() {
     };
   }, []);
 
-  // Функция для проверки ссылки и получения данных
   const search = () => {
     const userInput = document.querySelector(".user_input").value.trim(); // Получение ссылки введённой пользователем
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
@@ -51,7 +47,7 @@ function App() {
       setIsValid(true);
       setError("");
       setUserLink(userInput);
-      saveLinkToLocalStorage(userInput);  // Сохраняем ссылку в localStorage
+      saveLinkToLocalStorage(userInput); 
       sendLinkToPython(userInput);
     } else {
       setIsValid(false);
@@ -59,18 +55,16 @@ function App() {
     }
   };
 
-  // Сохранение уникальной ссылки в localStorage
   const saveLinkToLocalStorage = (link) => {
     let savedLinks = JSON.parse(localStorage.getItem("previousLinks")) || [];
     
     if (!savedLinks.includes(link)) {
       savedLinks.push(link);
       localStorage.setItem("previousLinks", JSON.stringify(savedLinks));
-      setPreviousLinks(savedLinks); // Обновляем состояние для выпадающего списка
+      setPreviousLinks(savedLinks); 
     }
   };
 
-  // Отправка ссылки на сервер Python и обработка результата
   const sendLinkToPython = async (link) => {
     try {
       const response = await fetch("http://localhost:5000/process-link", {
@@ -86,26 +80,24 @@ function App() {
       }
 
       const result = await response.json();
-      console.log("Полученные данные:", result); // Проверяем структуру данных
-      setProducts(result); // Устанавливаем данные для продуктов
+      console.log("Полученные данные:", result); 
+      setProducts(result); 
     } catch (error) {
       console.error("Error:", error);
       setError("Ошибка при получении данных о товаре");
     }
   };
 
-  // Обработчик выбора ссылки из выпадающего списка
   const handleSelectLink = (link) => {
     setUserLink(link);
-    document.querySelector(".user_input").value = link;  // Устанавливаем значение в input
-    setIsDropdownVisible(false); // Закрываем выпадающий список после выбора
+    document.querySelector(".user_input").value = link;  
+    setIsDropdownVisible(false); 
   };
 
-  // Обработчик удаления ссылки
   const handleDeleteLink = (linkToDelete) => {
     const updatedLinks = previousLinks.filter(link => link !== linkToDelete);
-    setPreviousLinks(updatedLinks); // Обновляем состояние
-    localStorage.setItem("previousLinks", JSON.stringify(updatedLinks)); // Обновляем localStorage
+    setPreviousLinks(updatedLinks); 
+    localStorage.setItem("previousLinks", JSON.stringify(updatedLinks)); 
   };
 
   return (
@@ -119,7 +111,7 @@ function App() {
               type="text"
               className="user_input"
               placeholder="Введите ссылку на товар"
-              onClick={() => setIsDropdownVisible(true)} // Показываем список при клике на поле ввода
+              onClick={() => setIsDropdownVisible(true)} 
               defaultValue={userLink}
             />
             {isDropdownVisible && previousLinks.length > 0 && (

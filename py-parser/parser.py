@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import json
 
 def parse(url):
     service = Service('edgedriver_win64/msedgedriver.exe')
@@ -26,7 +25,7 @@ def parse(url):
         product['image'] = wait.until(
             EC.presence_of_element_located((By.CLASS_NAME, 'photo-zoom__preview'))
         ).get_attribute("src")
-        product['link'] = url  # Сохраняем ссылку на товар
+        product['link'] = url  
     except Exception as e:
         print(f"Error occurred: {e}")
     driver.quit()
@@ -42,13 +41,11 @@ def search_by_name(name):
     links = []
 
     try:
-        # Находим все элементы, соответствующие карточкам товаров
         product_elements = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a.product-card__link.j-card-link.j-open-full-product-card'))
         )
 
-        # Проходим по каждому элементу и извлекаем ссылку
-        for element in product_elements[:2]:  # Ограничение на 10 товаров
+        for element in product_elements[:2]:  
             try:
                 product_link = element.get_attribute("href")
                 if product_link:
@@ -72,7 +69,3 @@ def search_by_name_and_parse(name):
         parsed_products.append(product_data)
 
     return parsed_products
-
-
-# Пример использования
-#parse("https://www.wildberries.ru/catalog/260553095/detail.aspx")
