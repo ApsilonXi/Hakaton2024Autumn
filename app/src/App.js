@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './App.css';
 
 function App() {
@@ -6,20 +6,54 @@ function App() {
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [userLink, setUserLink] = useState("");
+  const [previousLinks, setPreviousLinks] = useState([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Состояние для видимости выпадающего списка
+  const inputRef = useRef(null); // Ссылка на поле ввода
+
+  // Загрузка предыдущих ссылок из localStorage при монтировании компонента
+  useEffect(() => {
+    const savedLinks = JSON.parse(localStorage.getItem("previousLinks")) || [];
+    setPreviousLinks(savedLinks);
+
+    // Обработчик для скрытия выпадающего списка при клике вне поля ввода
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   // Функция для проверки ссылки и получения данных
   const search = () => {
-    const userInput = document.querySelector(".user_input").value; // Получение ссылки введённой пользователем
+    const userInput = document.querySelector(".user_input").value.trim(); // Получение ссылки введённой пользователем
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
 
-    if (urlPattern.test(userInput.trim())) {
+    if (urlPattern.test(userInput)) {
       setIsValid(true);
       setError("");
       setUserLink(userInput);
+      saveLinkToLocalStorage(userInput);  // Сохраняем ссылку в localStorage
       sendLinkToPython(userInput);
     } else {
       setIsValid(false);
       setError("Ошибка! Неправильная ссылка на товар");
+    }
+  };
+
+  // Сохранение уникальной ссылки в localStorage
+  const saveLinkToLocalStorage = (link) => {
+    let savedLinks = JSON.parse(localStorage.getItem("previousLinks")) || [];
+    
+    if (!savedLinks.includes(link)) {
+      savedLinks.push(link);
+      localStorage.setItem("previousLinks", JSON.stringify(savedLinks));
+      setPreviousLinks(savedLinks); // Обновляем состояние для выпадающего списка
     }
   };
 
@@ -46,13 +80,45 @@ function App() {
     }
   };
 
+  // Обработчик выбора ссылки из выпадающего списка
+  const handleSelectLink = (link) => {
+    setUserLink(link);
+    document.querySelector(".user_input").value = link;  // Устанавливаем значение в input
+    setIsDropdownVisible(false); // Закрываем выпадающий список после выбора
+  };
+
+  // Обработчик удаления ссылки
+  const handleDeleteLink = (linkToDelete) => {
+    const updatedLinks = previousLinks.filter(link => link !== linkToDelete);
+    setPreviousLinks(updatedLinks); // Обновляем состояние
+    localStorage.setItem("previousLinks", JSON.stringify(updatedLinks)); // Обновляем localStorage
+  };
+
   return (
     <div className="App">
       <header className="header">
         <h1>Анализатор карточек товаров</h1>
 
         <div className='container'>
-          <input type="text" className="user_input" placeholder="Введите ссылку на товар" />
+          <div ref={inputRef} className="input-container">
+            <input
+              type="text"
+              className="user_input"
+              placeholder="Введите ссылку на товар"
+              onClick={() => setIsDropdownVisible(true)} // Показываем список при клике на поле ввода
+              defaultValue={userLink}
+            />
+            {isDropdownVisible && previousLinks.length > 0 && (
+              <div className="dropdown">
+                {previousLinks.map((link, index) => (
+                  <div key={index} className="dropdown-item">
+                    <span onClick={() => handleSelectLink(link)}>{link}</span>
+                    <button className="delete-btn" onClick={() => handleDeleteLink(link)}>Удалить</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <img className='s_icon'
             src='/search.svg'
             alt='s'
@@ -91,7 +157,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
