@@ -31,11 +31,7 @@ function App() {
 
   // Функция для проверки ссылки и получения данных
   const search = () => {
-<<<<<<< Updated upstream
     const userInput = document.querySelector(".user_input").value.trim(); // Получение ссылки введённой пользователем
-=======
-    const userInput = document.querySelector(".user_input").value;
->>>>>>> Stashed changes
     const urlPattern = /^https:\/\/www\.wildberries\.ru\/catalog\/\d{5,}\/detail\.aspx$/;
 
     if (urlPattern.test(userInput)) {
@@ -104,7 +100,6 @@ function App() {
       <header className="header">
         <h1>Анализатор карточек товаров</h1>
 
-<<<<<<< Updated upstream
         <div className='container'>
           <div ref={inputRef} className="input-container">
             <input
@@ -128,14 +123,6 @@ function App() {
           <img className='s_icon'
             src='/search.svg'
             alt='s'
-=======
-        <div className="container">
-          <input type="text" className="user_input" placeholder="Введите ссылку на товар" />
-          <img
-            className="s_icon"
-            src="/search.svg"
-            alt="s"
->>>>>>> Stashed changes
             onClick={search}
             onMouseOver={(e) => (e.currentTarget.src = "/search_h.svg")}
             onMouseOut={(e) => (e.currentTarget.src = "/search.svg")}

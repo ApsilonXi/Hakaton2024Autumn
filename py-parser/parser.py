@@ -48,7 +48,7 @@ def search_by_name(name):
         )
 
         # Проходим по каждому элементу и извлекаем ссылку
-        for element in product_elements[:10]:  # Ограничение на 10 товаров
+        for element in product_elements[:2]:  # Ограничение на 10 товаров
             try:
                 product_link = element.get_attribute("href")
                 if product_link:
